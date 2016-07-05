@@ -5,13 +5,31 @@
 		this.KEYS = {LEFT: 37, RIGHT: 39, TOP: 38, BOTTOM: 40, SPACE: 32};
 		this.isDrawn;
 
-		this.addSquare();
-		this.addSquare();
-		this.addSquare();
-
+		this.init();
 	};
 
 	Game.prototype = {
+		init: function(){
+			var gameStarts = [
+				[['x0-y0', 2], ['x2-y2', 4], ['x0-y3', 2]],
+				[['x1-y1', 2], ['x3-y2', 4], ['x2-y0', 4]],
+				[['x0-y2', 2], ['x2-y2', 4], ['x2-y0', 2]],
+				[['x1-y3', 2], ['x3-y2', 4], ['x3-y0', 4]],
+				[['x0-y0', 4], ['x2-y2', 2], ['x0-y1', 2]],
+				[['x1-y1', 4], ['x3-y2', 2], ['x1-y0', 4]],
+				[['x0-y3', 4], ['x2-y2', 2], ['x2-y0', 2]],
+				[['x1-y3', 4], ['x3-y2', 2], ['x3-y0', 4]]
+			];
+
+			var index = Math.floor(Math.random()*8);
+			var gameStart = gameStarts[index];
+
+			for(var i = 0; i < 3; i++){
+				var item = gameStart[i];
+				this.drawSquare(item[0], item[1]);
+			}
+		},
+
 		drawSquare: function(sqPosition, sqValue){
 			this.isDrawn = false;
 			var squareDiv = document.createElement('div');
@@ -21,9 +39,7 @@
 			setTimeout(function(){
 				document.getElementById('game').appendChild(squareDiv);
 				that.isDrawn = true; // !!!
-				console.log(that.isDrawn);
 			}, 200);
-			console.log(this.isDrawn);
 		},
 
 		addSquare: function(){
@@ -65,7 +81,6 @@
 		},
 
 		onkeydownWindow: function(keyCode){
-			console.log(this.isDrawn);
 			if(this.isDrawn == true){
 				hasMoved = false;
 				switch (keyCode) {
