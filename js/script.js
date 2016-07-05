@@ -3,6 +3,7 @@
 		var score = 0;
 		this.squares = [];
 		this.KEYS = {LEFT: 37, RIGHT: 39, TOP: 38, BOTTOM: 40, SPACE: 32};
+		this.isDrawn;
 
 		this.addSquare();
 		this.addSquare();
@@ -11,28 +12,18 @@
 	};
 
 	Game.prototype = {
-		addSquare0: function(){
-			var filter = this.squares.filter(function(square){
-				return 	(square.value == '')
-			});
-
-			var random = Math.floor(Math.random() * filter.length);
-			var pos = filter[random].position;
-
-			for(var i = 0, length = this.squares.length; i < length; i++){ // !!!
-				var square = this.squares[i];
-				if(square.position.x == pos.x && square.position.y == pos.y){
-					square.value = Math.floor(Math.random()*2)*2+2; // 2 or 4
-				}
-			}
-		},
-
 		drawSquare: function(sqPosition, sqValue){
+			this.isDrawn = false;
 			var squareDiv = document.createElement('div');
 			squareDiv.className = sqPosition;
 			squareDiv.innerHTML = sqValue;
-			setTimeout(function(){document.getElementById('game').appendChild(squareDiv);}, 500);
-
+			var that = this;
+			setTimeout(function(){
+				document.getElementById('game').appendChild(squareDiv);
+				that.isDrawn = true; // !!!
+				console.log(that.isDrawn);
+			}, 200);
+			console.log(this.isDrawn);
 		},
 
 		addSquare: function(){
@@ -74,64 +65,67 @@
 		},
 
 		onkeydownWindow: function(keyCode){
-			hasMoved = false;
-			switch (keyCode) {
-				case this.KEYS.TOP:
-					var TopSquares = [
-						['x0-y0', 'x0-y1', 'x0-y2', 'x0-y3'],
-						['x1-y0', 'x1-y1', 'x1-y2', 'x1-y3'],
-						['x2-y0', 'x2-y1', 'x2-y2', 'x2-y3'],
-						['x3-y0', 'x3-y1', 'x3-y2', 'x3-y3']
-					];
-					for(var i = 0, length = TopSquares.length; i < length; i++){
-						var squares = TopSquares[i];
-						moveSquares(squares);
-					}
-					break;
+			console.log(this.isDrawn);
+			if(this.isDrawn == true){
+				hasMoved = false;
+				switch (keyCode) {
+					case this.KEYS.TOP:
+						var TopSquares = [
+							['x0-y0', 'x0-y1', 'x0-y2', 'x0-y3'],
+							['x1-y0', 'x1-y1', 'x1-y2', 'x1-y3'],
+							['x2-y0', 'x2-y1', 'x2-y2', 'x2-y3'],
+							['x3-y0', 'x3-y1', 'x3-y2', 'x3-y3']
+						];
+						for(var i = 0, length = TopSquares.length; i < length; i++){
+							var squares = TopSquares[i];
+							moveSquares(squares);
+						}
+						break;
 
-				case this.KEYS.BOTTOM:
-					var BottomSquares = [
-						['x0-y3', 'x0-y2', 'x0-y1', 'x0-y0'],
-						['x1-y3', 'x1-y2', 'x1-y1', 'x1-y0'],
-						['x2-y3', 'x2-y2', 'x2-y1', 'x2-y0'],
-						['x3-y3', 'x3-y2', 'x3-y1', 'x3-y0']
-					];
-					for(var i = 0, length = BottomSquares.length; i < length; i++){
-						var squares = BottomSquares[i];
-						moveSquares(squares);
-					}
-					break;
+					case this.KEYS.BOTTOM:
+						var BottomSquares = [
+							['x0-y3', 'x0-y2', 'x0-y1', 'x0-y0'],
+							['x1-y3', 'x1-y2', 'x1-y1', 'x1-y0'],
+							['x2-y3', 'x2-y2', 'x2-y1', 'x2-y0'],
+							['x3-y3', 'x3-y2', 'x3-y1', 'x3-y0']
+						];
+						for(var i = 0, length = BottomSquares.length; i < length; i++){
+							var squares = BottomSquares[i];
+							moveSquares(squares);
+						}
+						break;
 
-				case this.KEYS.LEFT:
-					var leftSquares = [
-						['x0-y0', 'x1-y0', 'x2-y0', 'x3-y0'],
-						['x0-y1', 'x1-y1', 'x2-y1', 'x3-y1'],
-						['x0-y2', 'x1-y2', 'x2-y2', 'x3-y2'],
-						['x0-y3', 'x1-y3', 'x2-y3', 'x3-y3']
-					];
-					for(var i = 0, length = leftSquares.length; i < length; i++){
-						var squares = leftSquares[i];
-						moveSquares(squares);
-					}
-					break;
+					case this.KEYS.LEFT:
+						var leftSquares = [
+							['x0-y0', 'x1-y0', 'x2-y0', 'x3-y0'],
+							['x0-y1', 'x1-y1', 'x2-y1', 'x3-y1'],
+							['x0-y2', 'x1-y2', 'x2-y2', 'x3-y2'],
+							['x0-y3', 'x1-y3', 'x2-y3', 'x3-y3']
+						];
+						for(var i = 0, length = leftSquares.length; i < length; i++){
+							var squares = leftSquares[i];
+							moveSquares(squares);
+						}
+						break;
 
-				case this.KEYS.RIGHT:
-					var rightSquares = [
-						['x3-y0', 'x2-y0', 'x1-y0', 'x0-y0'],
-						['x3-y1', 'x2-y1', 'x1-y1', 'x0-y1'],
-						['x3-y2', 'x2-y2', 'x1-y2', 'x0-y2'],
-						['x3-y3', 'x2-y3', 'x1-y3', 'x0-y3']
-					];
-					for(var i = 0, length = rightSquares.length; i < length; i++){
-						var squares = rightSquares[i];
-						moveSquares(squares);
-					}
-					break;
-			}
-			if(hasMoved){
-				this.deleteSquares();
-				this.addSquare();
+					case this.KEYS.RIGHT:
+						var rightSquares = [
+							['x3-y0', 'x2-y0', 'x1-y0', 'x0-y0'],
+							['x3-y1', 'x2-y1', 'x1-y1', 'x0-y1'],
+							['x3-y2', 'x2-y2', 'x1-y2', 'x0-y2'],
+							['x3-y3', 'x2-y3', 'x1-y3', 'x0-y3']
+						];
+						for(var i = 0, length = rightSquares.length; i < length; i++){
+							var squares = rightSquares[i];
+							moveSquares(squares);
+						}
+						break;
+				}
+				if(hasMoved){
+					this.deleteSquares();
+					this.addSquare();
 
+				}
 			}
 		}
 	};
@@ -453,6 +447,5 @@
 			game.onkeydownWindow(e.keyCode);
 		};
 	};
-
 
 })();
