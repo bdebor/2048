@@ -1,7 +1,12 @@
 (function(){
 	var Game = function(){
 		var score = 0;
-		this.squares = [];
+		this.squares = [
+			['x0-y0', 'x0-y1', 'x0-y2', 'x0-y3'],
+			['x1-y0', 'x1-y1', 'x1-y2', 'x1-y3'],
+			['x2-y0', 'x2-y1', 'x2-y2', 'x2-y3'],
+			['x3-y0', 'x3-y1', 'x3-y2', 'x3-y3']
+		];
 		this.KEYS = {LEFT: 37, RIGHT: 39, TOP: 38, BOTTOM: 40, SPACE: 32};
 		this.isDrawn;
 
@@ -83,16 +88,17 @@
 		onkeydownWindow: function(keyCode){
 			if(this.isDrawn == true){
 				hasMoved = false;
+				var vector = {};
 				switch (keyCode) {
 					case this.KEYS.TOP:
-						var TopSquares = [
+						var topSquares = [
 							['x0-y0', 'x0-y1', 'x0-y2', 'x0-y3'],
 							['x1-y0', 'x1-y1', 'x1-y2', 'x1-y3'],
 							['x2-y0', 'x2-y1', 'x2-y2', 'x2-y3'],
 							['x3-y0', 'x3-y1', 'x3-y2', 'x3-y3']
 						];
-						for(var i = 0, length = TopSquares.length; i < length; i++){
-							var squares = TopSquares[i];
+						for(var i = 0, length = topSquares.length; i < length; i++){
+							var squares = topSquares[i];
 							moveSquares(squares);
 						}
 						break;
@@ -135,6 +141,7 @@
 							moveSquares(squares);
 						}
 						break;
+
 				}
 				if(hasMoved){
 					this.deleteSquares();
@@ -158,296 +165,99 @@
 		var sq2Val = getSquareValue(sq2);
 		var sq3Val = getSquareValue(sq3);
 
-		var setSquaresValues = function(){ // filter ???
-			console.log('setSquaresValues');
-			if(sq0Val != ''){
-				if(sq1Val != '' && sq1Val == sq0Val){
-					sq0Val = parseInt(sq0Val)*2;
-					sq1Val = '';
-				}
+		var sqVals = [sq0Val, sq1Val, sq2Val, sq3Val];
+		var merges = [0, 0, 0, 0];
+
+		var isSquare = function(index){
+			if(sqVals[index] != '' && index >= 0){
+				return true;
 			}else{
-				if(sq1Val != ''){
-					sq0Val = sq1Val;
-					sq1Val = '';
-				}
-			}
-			if(sq1Val != ''){
-				if(sq2Val != '' && sq2Val == sq1Val){
-					sq1Val = parseInt(sq1Val)*2;
-					sq2Val = '';
-				}
-			}else{
-				if(sq2Val != ''){
-					sq1Val = sq2Val;
-					sq2Val = '';
-				}
-			}
-			if(sq2Val != ''){
-				if(sq3Val != ''  && sq3Val == sq2Val){
-					sq2Val = parseInt(sq2Val)*2;
-					sq3Val = '';
-				}
-			}else{
-				if(sq3Val != ''){
-					sq2Val = sq3Val;
-					sq3Val = '';
-				}
+				return false;
 			}
 		};
 
-		//var filter = x0vals.filter(function(val){
-		//	return val == '';
-		//});
-		//console.log(filter);
-		//var length = filter.length;
-		//console.log(length);
-		//setSquaresValues();
-		//if(length <= 1){
-		//	setSquaresValues();
-		//}
-		//if(length == 0){
-		//	setSquaresValues();
-		//}
-
-		var x0vals = [{pos: squares[0], val:sq0Val}, {pos: squares[1], val:sq1Val}, {pos: squares[2], val:sq2Val}, {pos: squares[3], val:sq3Val}];
-
-		var filter1 = x0vals.filter(function(square){
-			return square.val !== '';
-		});
-		var length1 = filter1.length;
-
-		setSquaresValues(); // optimisation !!!
-		setSquaresValues();
-		setSquaresValues();
-
-		// draw
-		var x0vals = [{pos: squares[0], val:sq0Val}, {pos: squares[1], val:sq1Val}, {pos: squares[2], val:sq2Val}, {pos: squares[3], val:sq3Val}];
-
-		var filter2 = x0vals.filter(function(square){
-			return square.val !== '';
-		});
-		var length2 = filter2.length;
-
-		if(length1 == 4){
-			if(length2 == 4) {
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-
-				if(prev0 != next0){
-					hasMoved = true;
-				}
+		var isWithinGrid = function(index){
+			if(index >= 0){
+				return true;
+			}else{
+				return false;
 			}
-			// 4 -> 3
-			if(length2 == 3){
+		};
+
+		var isSameValue = function(index1, index2){
+			if(sqVals[index1] == sqVals[index2]){
+				return true;
+			}else{
+				return false;
+			}
+		};
+
+		var isMerged = function(index){
+			if(merges[index] == 0){
+				return false;
+			}else{
+				return true;
+			}
+		};
+
+		var move = function(index1, index2){
+			if(index1 != index2){
+				document.querySelector('.'+squares[index1]).className = squares[index2];
+
 				hasMoved = true;
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var prevVal0 = filter1[0].val;
-				var nextVal0 = filter2[0].val;
-				var prev1 = filter1[1].pos;
-				var next1 = filter2[1].pos;
-				var prevVal1 = filter1[1].val;
-				var nextVal1 = filter2[1].val;
-				var prev2 = filter1[2].pos;
-				var next2 = filter2[2].pos;
-				var nextVal2 = filter2[2].val;
-				var prev3 = filter1[3].pos;
+				updateSqVals(index1, index2);
+			}
+		};
 
-				var squareDiv0 = document.querySelector('.'+prev0);
-				var squareDiv1 = document.querySelector('.'+prev1);
-				var squareDiv2 = document.querySelector('.'+prev2);
-				var squareDiv3 = document.querySelector('.'+prev3);
+		var merge = function(index1, index2){
+			updateSqVals(index1, index2, true);
+			var newVal = sqVals[index2];
+			document.querySelector('.'+squares[index2]).innerHTML = newVal;
+			document.querySelector('.'+squares[index1]).className = squares[index2]+' delete';
 
-				if(prevVal0 == nextVal0){
-					if(prevVal1 == nextVal1){// wxyz -> ayz
-						squareDiv2.className = next2;
-						squareDiv3.className = next2+' delete';
-						setTimeout(function(){squareDiv2.innerHTML = nextVal2;}, 200);
-					}else{ // wxyz -> waz
-						squareDiv1.className = next1;
-						squareDiv2.className = next1+' delete';
-						squareDiv3.className = next2;
-						setTimeout(function(){squareDiv1.innerHTML = nextVal1;}, 200);
+			merges[index2] == 1;
+			hasMoved = true;
+		};
+		
+		var updateSqVals = function(index1, index2, mergeAction = false){
+			var coef = 1;
+			if(mergeAction){
+				coef = 2;
+			}
+			var sqval = parseInt(sqVals[index1])*coef;
+			sqVals[index2] = sqval;
+			sqVals[index1] = '';
+		};
+
+		for(var i = 1; i <= 3; i++){
+			if(isSquare(i)){
+				var counter = 1;
+				while(true){
+					j = i - counter;
+					if(isSquare(j) == true){
+						if(isWithinGrid(j)){
+							if(isSameValue(i, j)){
+								if(isMerged(j)){
+									move(i, j+1);
+								}else{
+									merge(i, j);
+								}
+							}else{
+								move(i, j+1);
+							}
+							break;
+						}else{
+							move(i, j+1);
+							break;
+						}
+					}else{
+						if(isWithinGrid(j) == false){
+							move(i, j+1);
+							break;
+						}
 					}
-				}else{ // wxyz -> wxa
-					squareDiv1.className = next0+' delete'
-					squareDiv2.className = next1;
-					squareDiv3.className = next2;
-					setTimeout(function(){squareDiv0.innerHTML = nextVal0;}, 200);
+					counter++;
 				}
-			}
-			// 4 -> 2
-			if(length2 == 2){
-				hasMoved = true;
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var prevVal0 = filter1[0].val;
-				var nextVal0 = filter2[0].val;
-				var prev1 = filter1[1].pos;
-				var next1 = filter2[1].pos;
-				var nextVal1 = filter2[1].val;
-				var prev2 = filter1[2].pos;
-				var prev3 = filter1[3].pos;
-				var prevVal3 = filter1[3].val;
-
-				var squareDiv0 = document.querySelector('.'+prev0);
-				var squareDiv1 = document.querySelector('.'+prev1);
-				var squareDiv2 = document.querySelector('.'+prev2);
-				var squareDiv3 = document.querySelector('.'+prev3);
-
-				if(prevVal0 == nextVal0){ // wxyz -> az
-					squareDiv2.className = next1+' delete';
-					squareDiv3.className = next1+' delete';
-					setTimeout(function(){squareDiv1.innerHTML = nextVal1;}, 200);
-				}else if(prevVal3 == nextVal1){ // wxyz -> wa
-					squareDiv1.className = next0+' delete';
-					squareDiv2.className = next0+' delete';
-					squareDiv3.className = next1;
-					setTimeout(function(){squareDiv0.innerHTML = nextVal0;}, 200);
-				}else{ // wxyz -> ab
-					squareDiv1.className = next0+' delete';
-					squareDiv2.className = next1;
-					squareDiv3.className = next1+' delete';
-					setTimeout(function(){
-						squareDiv0.innerHTML = nextVal0;
-						squareDiv2.innerHTML = nextVal1;
-					}, 200);
-				}
-			}
-			// 4 -> 1
-			if(length2 == 1){
-				hasMoved = true;
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var val0 = filter2[0].val;
-				var prev1 = filter1[1].pos;
-				var prev2 = filter1[2].pos;
-				var prev3 = filter1[3].pos;
-
-				var squareDiv0 = document.querySelector('.'+prev0);
-				squareDiv0.className = next0;
-				var squareDiv1 = document.querySelector('.'+prev1);
-				squareDiv1.className = next0+' delete';
-				var squareDiv2 = document.querySelector('.'+prev2);
-				squareDiv2.className = next0+' delete';
-				var squareDiv3 = document.querySelector('.'+prev3);
-				squareDiv3.className = next0+' delete';
-
-				setTimeout(function(){squareDiv0.innerHTML = val0;}, 200);
-			}
-		}
-
-		if(length1 == 3){
-			// 3 -> 3
-			if(length2 == 3){
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var prev1 = filter1[1].pos;
-				var next1 = filter2[1].pos;
-				var prev2 = filter1[2].pos;
-				var next2 = filter2[2].pos;
-
-				var squareDiv0 = document.querySelector('.'+prev0);
-				squareDiv0.className = next0;
-				var squareDiv1 = document.querySelector('.'+prev1);
-				squareDiv1.className = next1;
-				var squareDiv2 = document.querySelector('.'+prev2);
-				squareDiv2.className = next2;
-
-				if(prev0 != next0 || prev1 != next1 || prev2 != next2){
-					hasMoved = true;
-				}
-			}
-			// 3 -> 2
-			if(length2 == 2){
-				hasMoved = true;
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var prevVal0 = filter1[0].val;
-				var nextVal0 = filter2[0].val;
-				var prev1 = filter1[1].pos;
-				var next1 = filter2[1].pos;
-				var nextVal1 = filter2[1].val;
-				var prev2 = filter1[2].pos;
-
-				var squareDiv0 = document.querySelector('.'+prev0);
-				squareDiv0.className = next0;
-				var squareDiv1 = document.querySelector('.'+prev1);
-				var squareDiv2 = document.querySelector('.'+prev2);
-
-				if(prevVal0 == nextVal0){
-					squareDiv1.className = next1;
-					squareDiv2.className = next0+' delete';
-					setTimeout(function(){squareDiv1.innerHTML = nextVal1;}, 200);
-				}else{
-					squareDiv1.className = next0+' delete'
-					squareDiv2.className = next1;
-					setTimeout(function(){squareDiv0.innerHTML = nextVal0;}, 200);
-				}
-			}
-			// 3 -> 1
-			if(length2 == 1){
-				hasMoved = true;
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var val0 = filter2[0].val;
-				var prev1 = filter1[1].pos;
-				var prev2 = filter1[2].pos;
-
-				var squareDiv0 = document.querySelector('.'+prev0);
-				squareDiv0.className = next0;
-				var squareDiv1 = document.querySelector('.'+prev1);
-				squareDiv1.className = next0+' delete';
-				var squareDiv2 = document.querySelector('.'+prev2);
-				squareDiv2.className = next0+' delete';
-
-				setTimeout(function(){squareDiv0.innerHTML = val0;}, 200);
-			}
-		}
-
-		if(length1 == 2){
-			// 2 -> 2
-			if(length2 == 2){
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var prev1 = filter1[1].pos;
-				var next1 = filter2[1].pos;
-
-				var squareDiv0 = document.querySelector('.'+prev0);
-				squareDiv0.className = next0;
-				var squareDiv1 = document.querySelector('.'+prev1);
-				squareDiv1.className = next1;
-
-				if(prev0 != next0 || prev1 != next1){
-					hasMoved = true;
-				}
-			}
-			// 2 -> 1
-			if(length2 == 1){
-				hasMoved = true;
-				var prev0 = filter1[0].pos;
-				var next0 = filter2[0].pos;
-				var val0 = filter2[0].val;
-				var prev1 = filter1[1].pos;
-
-				var squareDiv0 = document.querySelector('.'+prev0);
-				squareDiv0.className = next0;
-				var squareDiv1 = document.querySelector('.'+prev1);
-				squareDiv1.className = next0+' delete';
-
-				setTimeout(function(){squareDiv0.innerHTML = val0;}, 200);
-			}
-		}
-		// 1 -> 1
-		if(length1 == 1){
-			var prev = filter1[0].pos;
-			var next = filter2[0].pos;
-
-			var squareDiv = document.querySelector('.'+prev);
-			squareDiv.className = next;
-
-			if(prev != next){
-				hasMoved = true;
 			}
 		}
 	};
