@@ -1,12 +1,8 @@
 (function(){
 	var Game = function(){
-		var score = 0;
-		this.squares = [
-			['x0-y0', 'x0-y1', 'x0-y2', 'x0-y3'],
-			['x1-y0', 'x1-y1', 'x1-y2', 'x1-y3'],
-			['x2-y0', 'x2-y1', 'x2-y2', 'x2-y3'],
-			['x3-y0', 'x3-y1', 'x3-y2', 'x3-y3']
-		];
+		this.grid = this.createGrid();
+		this.coordinates = this.createCoordinates();
+
 		this.KEYS = {LEFT: 37, RIGHT: 39, TOP: 38, BOTTOM: 40, SPACE: 32};
 		this.isDrawn;
 
@@ -14,32 +10,87 @@
 	};
 
 	Game.prototype = {
-		init: function(){
-			var gameStarts = [
-				[['x0-y0', 2], ['x2-y2', 4], ['x0-y3', 2]],
-				[['x1-y1', 2], ['x3-y2', 4], ['x2-y0', 4]],
-				[['x0-y2', 2], ['x2-y2', 4], ['x2-y0', 2]],
-				[['x1-y3', 2], ['x3-y2', 4], ['x3-y0', 4]],
-				[['x0-y0', 4], ['x2-y2', 2], ['x0-y1', 2]],
-				[['x1-y1', 4], ['x3-y2', 2], ['x1-y0', 4]],
-				[['x0-y3', 4], ['x2-y2', 2], ['x2-y0', 2]],
-				[['x1-y3', 4], ['x3-y2', 2], ['x3-y0', 4]]
-			];
-
-			var index = Math.floor(Math.random()*8);
-			var gameStart = gameStarts[index];
-
-			for(var i = 0; i < 3; i++){
-				var item = gameStart[i];
-				this.drawSquare(item[0], item[1]);
-			}
+		//createGrid: function(){
+		//	var grid = [];
+		//	for(var x = 0; x <= 3; x++){
+		//		grid[x] = [];
+		//		for(var y = 0; y <= 3; y++){
+		//			grid[x][y] = '';
+		//		}
+		//	}
+		//	return grid;
+		//},
+		
+		createGrid: function(){
+			//var grid = [];
+			//for(var i = 0; i < 16; i++){
+			//	grid[i] = '';
+			//}
+			//return grid;
+			return ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 		},
 
-		drawSquare: function(sqPosition, sqValue){
+		createCoordinates: function(){
+			//var coordinates = [];
+			//for(var y = 0; y <= 3; y++){
+			//	for(var x = 0; x <= 3; x++){
+			//		coordinates.push('x'+x+'-y'+y);
+			//	}
+			//}
+			//return coordinates;
+			return [
+				'x0-y0', 'x1-y0', 'x2-y0', 'x3-y0',
+				'x0-y1', 'x1-y1', 'x2-y1', 'x3-y1',
+				'x0-y2', 'x1-y2', 'x2-y2', 'x3-y2',
+				'x0-y3', 'x1-y3', 'x2-y3', 'x3-y3'
+			];
+		},
+
+		//coordinateToPosition: function(x, y){
+		//	var coordinate = 'x'+x+'-y'+y;
+		//	return this.coordinates.indexOf(coordinate);
+		//},
+
+		coordinateToPosition: function(coordinate){
+			return this.coordinates.indexOf(coordinate);
+		},
+
+		positionToCoordinate: function(position){
+			return this.coordinates[position];
+		},
+
+		init: function(){
+			var indexes = [];
+			for(var i = 0; i < 16; i++){
+				indexes.push(i);
+			}
+			var squares = [];
+			for(var x = 0; x < 3; x++){
+				var index = Math.floor(Math.random()*indexes.length);
+				var sqValue = Math.floor(Math.random()*2)*2+2; // 2 or 4
+				squares.push([this.coordinates[index], sqValue]);
+				indexes.splice(index, 1);
+			}
+			for(var i = 0; i < 3; i++){
+				var square = squares[i];
+				this.drawSquare(square[0], square[1]);
+			}
+		},
+		
+		updateGrid: function(sqPosition, sqValue){
+			this.grid[sqPosition] = sqValue;
+			console.log(this.grid);
+		},
+
+		drawSquare: function(sqCoordinate, sqValue){
 			this.isDrawn = false;
 			var squareDiv = document.createElement('div');
-			squareDiv.className = sqPosition;
+			squareDiv.className = sqCoordinate;
 			squareDiv.innerHTML = sqValue;
+
+			var sqPosition = this.coordinateToPosition(sqCoordinate);
+			this.updateGrid(sqPosition, sqValue);
+
 			var that = this;
 			setTimeout(function(){
 				document.getElementById('game').appendChild(squareDiv);
@@ -149,6 +200,18 @@
 
 				}
 			}
+		}
+	};
+
+	var Square = function(position, value){
+		this.position = position;
+		this.value = value;
+		this.isMerged = false;
+	};
+
+	Square.prototype = {
+		init: function () {
+
 		}
 	};
 
