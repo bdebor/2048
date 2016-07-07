@@ -51,12 +51,12 @@
 		//	return this.coordinates.indexOf(coordinate);
 		//},
 
-		coordinateToPosition: function(coordinate){
-			return this.coordinates.indexOf(coordinate);
+		coordinateToPosition: function(sqCoordinate){
+			return this.coordinates.indexOf(sqCoordinate);
 		},
 
-		positionToCoordinate: function(position){
-			return this.coordinates[position];
+		positionToCoordinate: function(sqPosition){
+			return this.coordinates[sqPosition];
 		},
 
 		init: function(){
@@ -64,16 +64,13 @@
 			for(var i = 0; i < 16; i++){
 				indexes.push(i);
 			}
-			var squares = [];
+
 			for(var x = 0; x < 3; x++){
 				var index = Math.floor(Math.random()*indexes.length);
+				var sqCoordinate = this.coordinates[index];
 				var sqValue = Math.floor(Math.random()*2)*2+2; // 2 or 4
-				squares.push([this.coordinates[index], sqValue]);
+				this.drawSquare(sqCoordinate, sqValue);
 				indexes.splice(index, 1);
-			}
-			for(var i = 0; i < 3; i++){
-				var square = squares[i];
-				this.drawSquare(square[0], square[1]);
 			}
 		},
 		
@@ -84,44 +81,55 @@
 
 		drawSquare: function(sqCoordinate, sqValue){
 			this.isDrawn = false;
-			var squareDiv = document.createElement('div');
-			squareDiv.className = sqCoordinate;
-			squareDiv.innerHTML = sqValue;
+			var sqDiv = document.createElement('div');
+			sqDiv.className = sqCoordinate;
+			sqDiv.innerHTML = sqValue;
 
 			var sqPosition = this.coordinateToPosition(sqCoordinate);
 			this.updateGrid(sqPosition, sqValue);
 
 			var that = this;
 			setTimeout(function(){
-				document.getElementById('game').appendChild(squareDiv);
+				document.getElementById('game').appendChild(sqDiv);
 				that.isDrawn = true; // !!!
 			}, 200);
 		},
 
 		addSquare: function(){
-			var squareDivs = document.querySelectorAll("#game div");
+			var availablePositions = this.grid.filter(function(sqPosition){
+				return sqPosition == '';
+			});
 
-			if(squareDivs.length == 16){
+			if(availablePositions.length == 0){
 				this.gameOver();
 			}else{
-				var ClassNames = [
-					'x0-y0', 'x0-y1', 'x0-y2', 'x0-y3',
-					'x1-y0', 'x1-y1', 'x1-y2', 'x1-y3',
-					'x2-y0', 'x2-y1', 'x2-y2', 'x2-y3',
-					'x3-y0', 'x3-y1', 'x3-y2', 'x3-y3'
-				];
-				var sqPosition = '';
-				do{
-					var index =  Math.floor(Math.random()*ClassNames.length);
-					sqPosition = ClassNames[index];
-					ClassNames.splice(index, 1);
-				}
-				while(document.querySelector('.'+sqPosition) != null);
-
+				var sqPosition = Math.floor(Math.random()*availablePositions.length);
+				var sqCoordinate = this.positionToCoordinate(sqPosition);
 				var sqValue = Math.floor(Math.random()*2)*2+2; // 2 or 4
-
-				this.drawSquare(sqPosition,sqValue);
+				this.drawSquare(sqCoordinate,sqValue);
 			}
+
+			//if(squareDivs.length == 16){
+			//	this.gameOver();
+			//}else{
+			//	var ClassNames = [
+			//		'x0-y0', 'x0-y1', 'x0-y2', 'x0-y3',
+			//		'x1-y0', 'x1-y1', 'x1-y2', 'x1-y3',
+			//		'x2-y0', 'x2-y1', 'x2-y2', 'x2-y3',
+			//		'x3-y0', 'x3-y1', 'x3-y2', 'x3-y3'
+			//	];
+			//	var sqPosition = '';
+			//	do{
+			//		var index =  Math.floor(Math.random()*ClassNames.length);
+			//		sqPosition = ClassNames[index];
+			//		ClassNames.splice(index, 1);
+			//	}
+			//	while(document.querySelector('.'+sqPosition) != null);
+            //
+			//	var sqValue = Math.floor(Math.random()*2)*2+2; // 2 or 4
+            //
+			//	this.drawSquare(sqPosition,sqValue);
+			//}
 		},
 
 		deleteSquares: function(){
