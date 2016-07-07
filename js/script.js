@@ -2,11 +2,25 @@
 	var Game = function(){
 		this.grid = this.createGrid();
 		this.coordinates = this.createCoordinates();
-
 		this.KEYS = {LEFT: 37, RIGHT: 39, TOP: 38, BOTTOM: 40, SPACE: 32};
 		this.isDrawn;
 
 		this.init();
+
+		//	['x0-y0', 'x1-y0', 'x2-y0', 'x3-y0'],
+		//	['x0-y1', 'x1-y1', 'x2-y1', 'x3-y1'],
+		//	['x0-y2', 'x1-y2', 'x2-y2', 'x3-y2'],
+		//	['x0-y3', 'x1-y3', 'x2-y3', 'x3-y3']
+
+		vector = [1, 0]; // LEFT
+		var array = [];
+		for(var y = 0; y <= 3; y++){
+			for(var x = 0; x <= 3; x++){
+				array.push('x'+x+'-y'+y);
+			}
+			//moveSquares(squares);
+		}
+		console.log(array);
 	};
 
 	Game.prototype = {
@@ -147,65 +161,53 @@
 		onkeydownWindow: function(keyCode){
 			if(this.isDrawn == true){
 				hasMoved = false;
-				var vector = {};
+				var processingOrders = [];
 				switch (keyCode) {
 					case this.KEYS.TOP:
-						var topSquares = [
+						processingOrders = [
 							['x0-y0', 'x0-y1', 'x0-y2', 'x0-y3'],
 							['x1-y0', 'x1-y1', 'x1-y2', 'x1-y3'],
 							['x2-y0', 'x2-y1', 'x2-y2', 'x2-y3'],
 							['x3-y0', 'x3-y1', 'x3-y2', 'x3-y3']
 						];
-						for(var i = 0, length = topSquares.length; i < length; i++){
-							var squares = topSquares[i];
-							moveSquares(squares);
-						}
 						break;
 
 					case this.KEYS.BOTTOM:
-						var BottomSquares = [
+						processingOrders = [
 							['x0-y3', 'x0-y2', 'x0-y1', 'x0-y0'],
 							['x1-y3', 'x1-y2', 'x1-y1', 'x1-y0'],
 							['x2-y3', 'x2-y2', 'x2-y1', 'x2-y0'],
 							['x3-y3', 'x3-y2', 'x3-y1', 'x3-y0']
 						];
-						for(var i = 0, length = BottomSquares.length; i < length; i++){
-							var squares = BottomSquares[i];
-							moveSquares(squares);
-						}
 						break;
 
 					case this.KEYS.LEFT:
-						var leftSquares = [
+						processingOrders = [
 							['x0-y0', 'x1-y0', 'x2-y0', 'x3-y0'],
 							['x0-y1', 'x1-y1', 'x2-y1', 'x3-y1'],
 							['x0-y2', 'x1-y2', 'x2-y2', 'x3-y2'],
 							['x0-y3', 'x1-y3', 'x2-y3', 'x3-y3']
 						];
-						for(var i = 0, length = leftSquares.length; i < length; i++){
-							var squares = leftSquares[i];
-							moveSquares(squares);
-						}
 						break;
 
 					case this.KEYS.RIGHT:
-						var rightSquares = [
+						vector = [1, 0];
+						processingOrders = [
 							['x3-y0', 'x2-y0', 'x1-y0', 'x0-y0'],
 							['x3-y1', 'x2-y1', 'x1-y1', 'x0-y1'],
 							['x3-y2', 'x2-y2', 'x1-y2', 'x0-y2'],
 							['x3-y3', 'x2-y3', 'x1-y3', 'x0-y3']
 						];
-						for(var i = 0, length = rightSquares.length; i < length; i++){
-							var squares = rightSquares[i];
-							moveSquares(squares);
-						}
 						break;
-
 				}
+
+				for(var i = 0, length = processingOrders.length; i < length; i++){
+					moveSquares(processingOrders[i]);
+				}
+
 				if(hasMoved){
 					this.deleteSquares();
 					this.addSquare();
-
 				}
 			}
 		}
