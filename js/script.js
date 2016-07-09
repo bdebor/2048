@@ -89,7 +89,6 @@ Game.prototype = {
 	},
 
 	deleteSquares: function(){
-		console.log('delete');
 		var sqDivs = document.querySelectorAll("#game .delete");
 		for(var i = 0, length = sqDivs.length; i < length; i++){
 			var sqDiv = sqDivs[i];
@@ -155,8 +154,6 @@ Game.prototype = {
 		}
 	},
 
-	/**/
-
 	moveSquares: function(squares){
 		var that  = this; // !!!
 		var sqVals = [
@@ -168,15 +165,7 @@ Game.prototype = {
 		var merges = [0, 0, 0, 0];
 
 		var isSquare = function(index){
-			if(index >= 0 && sqVals[index].val != ''){
-				return true;
-			}else{
-				return false;
-			}
-		};
-
-		var isWithinGrid = function(index){
-			if(index >= 0) {
+			if(sqVals[index].val != ''){
 				return true;
 			}else{
 				return false;
@@ -230,32 +219,24 @@ Game.prototype = {
 
 		for(var i = 1; i <= 3; i++){
 			if(isSquare(i)){
-				var counter = 1;
-				while(true){
-					j = i - counter;
-					if(isSquare(j) == true){
-						if(isWithinGrid(j)){
-							if(isSameValue(i, j)){
-								if(isMerged(j)){
-									move(i, j + 1);
-								}else{
-									merge(i, j);
-								}
-							}else{
+				var j = i - 1;
+				while(j >= 0){
+					if(isSquare(j)){
+						if(isSameValue(i, j)){
+							if(isMerged(j)){
 								move(i, j + 1);
+							}else{
+								merge(i, j);
 							}
-							break;
 						}else{
 							move(i, j + 1);
-							break;
 						}
-					}else{
-						if(isWithinGrid(j) == false){
-							move(i, j + 1);
-							break;
-						}
+						break;
+					}else if(j == 0){
+						move(i, j);
+						break;
 					}
-					counter++;
+					j--;
 				}
 			}
 		}
