@@ -40,12 +40,12 @@ Game.prototype = {
 			indexes.push(i);
 		}
 
-		for(var i = 0; i < 3; i++){
-			var j = Math.floor(Math.random() * indexes.length);
-			var sqCoordinate = this.coordinates[indexes[j]];
+		for(var j = 0; j < 3; j++){
+			var k = Math.floor(Math.random() * indexes.length);
+			var sqCoordinate = this.coordinates[indexes[k]];
 			var sqValue = 2;
 			this.drawSquare(sqCoordinate, sqValue);
-			indexes.splice(j, 1);
+			indexes.splice(k, 1);
 		}
 	},
 
@@ -72,7 +72,7 @@ Game.prototype = {
 	addSquare: function(){
 		var availablePositions = [];
 		var keys = Object.keys(this.grid);
-		for(i = 0; i < keys.length; i++){
+		for(var i = 0, length = keys.length; i < length; i++){
 			if(this.grid[i].val == ''){
 				availablePositions.push(i);
 			}
@@ -133,7 +133,6 @@ Game.prototype = {
 					break;
 
 				case this.KEYS.RIGHT:
-					vector = [1, 0];
 					processingOrders = [
 						['x3-y0', 'x2-y0', 'x1-y0', 'x0-y0'],
 						['x3-y1', 'x2-y1', 'x1-y1', 'x0-y1'],
@@ -165,27 +164,15 @@ Game.prototype = {
 		var merges = [0, 0, 0, 0];
 
 		var isSquare = function(index){
-			if(sqVals[index].val != ''){
-				return true;
-			}else{
-				return false;
-			}
+			return sqVals[index].val != '';
 		};
 
 		var isSameValue = function(index1, index2){
-			if(sqVals[index1].val == sqVals[index2].val){
-				return true;
-			}else{
-				return false;
-			}
+			return sqVals[index1].val == sqVals[index2].val;
 		};
 
 		var isMerged = function(index){
-			if(merges[index] == 0){
-				return false;
-			}else{
-				return true;
-			}
+			return merges[index] != 0;
 		};
 
 		var move = function(index1, index2){
@@ -199,21 +186,19 @@ Game.prototype = {
 
 		var merge = function(index1, index2){
 			updateSqVals(index1, index2, true);
-			var newVal = sqVals[index2].val;
-			document.querySelector('.' + squares[index2]).innerHTML = newVal;
+			document.querySelector('.' + squares[index2]).innerHTML = sqVals[index2].val;
 			document.querySelector('.' + squares[index1]).className = squares[index2] + ' delete';
 
 			merges[index2] = 1;
 			that.hasMoved = true;
 		};
 
-		var updateSqVals = function(index1, index2, mergeAction = false){
+		var updateSqVals = function(index1, index2, mergeAction){
 			var coef = 1;
 			if(mergeAction){
 				coef = 2;
 			}
-			var sqval = parseInt(sqVals[index1].val) * coef;
-			sqVals[index2].val = sqval;
+			sqVals[index2].val = parseInt(sqVals[index1].val) * coef;
 			sqVals[index1].val = '';
 		};
 
