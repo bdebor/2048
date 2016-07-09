@@ -56,11 +56,11 @@ Game.prototype = {
 
 	init: function () {
 		var indexes = [];
-		for (var i = 0; i < 16; i++) {
+		for(var i = 0; i < 16; i++){
 			indexes.push(i);
 		}
 
-		for (var i = 0; i < 3; i++) {
+		for(var i = 0; i < 3; i++){
 			var j = Math.floor(Math.random() * indexes.length);
 			var sqCoordinate = this.coordinates[indexes[j]];
 			var sqValue = 2;
@@ -69,12 +69,12 @@ Game.prototype = {
 		}
 	},
 
-	updateGrid: function (sqPosition, sqValue) {
+	updateGrid: function(sqPosition, sqValue){
 		this.grid[sqPosition].val = sqValue;
 		console.log(this.grid);
 	},
 
-	drawSquare: function (sqCoordinate, sqValue) {
+	drawSquare: function(sqCoordinate, sqValue){
 		this.isDrawn = false;
 		var sqDiv = document.createElement('div');
 		sqDiv.className = sqCoordinate;
@@ -84,7 +84,7 @@ Game.prototype = {
 		this.updateGrid(sqPosition, sqValue);
 
 		var that = this;
-		setTimeout(function () {
+		setTimeout(function(){
 			document.getElementById('game').appendChild(sqDiv);
 			that.isDrawn = true; // !!!
 		}, 200);
@@ -112,7 +112,7 @@ Game.prototype = {
 	deleteSquares: function(){
 		console.log('delete');
 		var sqDivs = document.querySelectorAll("#game .delete");
-		for (var i = 0, length = sqDivs.length; i < length; i++) {
+		for(var i = 0, length = sqDivs.length; i < length; i++){
 			var sqDiv = sqDivs[i];
 			sqDiv.remove(0);
 		}

@@ -29,7 +29,21 @@ describe("tests", function() {
 			expect(availablePositions.length).toBe(3);
 		});
 
-		//it("should display 3 squares at different position", function() {
+		//describe('.movesAvailable', function() {
+		//	it('should report true if there are cells available', function() {
+		//		spyOn(_gridService, 'anyCellsAvailable').andReturn(true);
+		//		expect(gameManager.movesAvailable()).toBeTruthy();
+		//	});
+		//});
+
+		it("test spy", function() {
+			spyOn(game, 'drawSquare');
+			var val = game.grid[0].val;
+			expect(val).toBe('');
+		});
+
+
+			//it("should display 3 squares at different position", function() {
 		//	var squares = document.querySelectorAll("#game div"); // undefined
 		//	sqClasses = [];
 		//	for(i = 0; i < squares.length; i++){
