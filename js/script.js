@@ -1,7 +1,7 @@
 var Game = function(){
 	this.grid = this.createGrid();
 	this.coordinates = this.createCoordinates();
-	this.KEYS = {LEFT: 37, RIGHT: 39, TOP: 38, BOTTOM: 40, SPACE: 32};
+	this.KEYS = {LEFT: 37, RIGHT: 39, TOP: 38, BOTTOM: 40};
 	this.isDrawn = false;
 	this.hasMoved = false;
 
@@ -10,14 +10,6 @@ var Game = function(){
 
 Game.prototype = {
 	createGrid: function(){
-		//var grid = [];
-		//for(var i = 0; i < 16; i++){
-		//	grid[i] = '';
-		//}
-		//return grid;
-
-		//return ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
-
 		var grid = {};
 		for(var i = 0; i < 16; i++){
 			grid[i] = {val: ''};
@@ -26,13 +18,6 @@ Game.prototype = {
 	},
 
 	createCoordinates: function () {
-		//var coordinates = [];
-		//for(var y = 0; y <= 3; y++){
-		//	for(var x = 0; x <= 3; x++){
-		//		coordinates.push('x'+x+'-y'+y);
-		//	}
-		//}
-		//return coordinates;
 		return [
 			'x0-y0', 'x1-y0', 'x2-y0', 'x3-y0',
 			'x0-y1', 'x1-y1', 'x2-y1', 'x3-y1',
@@ -40,11 +25,6 @@ Game.prototype = {
 			'x0-y3', 'x1-y3', 'x2-y3', 'x3-y3'
 		];
 	},
-
-	//coordinateToPosition: function(x, y){
-	//	var coordinate = 'x'+x+'-y'+y;
-	//	return this.coordinates.indexOf(coordinate);
-	//},
 
 	coordinateToPosition: function (sqCoordinate) {
 		return this.coordinates.indexOf(sqCoordinate);
@@ -71,7 +51,6 @@ Game.prototype = {
 
 	updateGrid: function(sqPosition, sqValue){
 		this.grid[sqPosition].val = sqValue;
-		console.log(this.grid);
 	},
 
 	drawSquare: function(sqCoordinate, sqValue){
@@ -103,7 +82,7 @@ Game.prototype = {
 			this.gameOver();
 		}else{
 			var sqPosition = Math.floor(Math.random() * availablePositions.length);
-			var sqCoordinate = this.positionToCoordinate(sqPosition);
+			var sqCoordinate = this.positionToCoordinate(availablePositions[sqPosition]);
 			var sqValue = 2;
 			this.drawSquare(sqCoordinate, sqValue);
 		}
@@ -179,40 +158,17 @@ Game.prototype = {
 	/**/
 
 	moveSquares: function(squares){
-		console.log('moveSquares');
-		console.log(this);
 		var that  = this; // !!!
-
-		var sq0 = document.querySelector('.' + squares[0]);
-		var sq1 = document.querySelector('.' + squares[1]);
-		var sq2 = document.querySelector('.' + squares[2]);
-		var sq3 = document.querySelector('.' + squares[3]);
-
-		//var getSqValue = function(square){
-		//	return square !== null ? square.innerHTML : '';
-		//};
-		//
-		//var sq0Val = getSqValue(sq0);
-		//var sq1Val = getSqValue(sq1);
-		//var sq2Val = getSqValue(sq2);
-		//var sq3Val = getSqValue(sq3);
-
 		var sqVals = [
 			this.grid[this.coordinateToPosition(squares[0])],
 			this.grid[this.coordinateToPosition(squares[1])],
 			this.grid[this.coordinateToPosition(squares[2])],
 			this.grid[this.coordinateToPosition(squares[3])]
 		];
-
-
-		//var sqVals = [sq0Val, sq1Val, sq2Val, sq3Val];
 		var merges = [0, 0, 0, 0];
 
 		var isSquare = function(index){
-			console.log('isSquare');
-
 			if(index >= 0 && sqVals[index].val != ''){
-				console.log(sqVals[index].val);
 				return true;
 			}else{
 				return false;
@@ -220,7 +176,6 @@ Game.prototype = {
 		};
 
 		var isWithinGrid = function(index){
-			console.log('isWithinGrid');
 			if(index >= 0) {
 				return true;
 			}else{
@@ -253,18 +208,13 @@ Game.prototype = {
 			}
 		};
 
-
 		var merge = function(index1, index2){
-			updateSqVals(index1, index2, true); // ???
+			updateSqVals(index1, index2, true);
 			var newVal = sqVals[index2].val;
 			document.querySelector('.' + squares[index2]).innerHTML = newVal;
 			document.querySelector('.' + squares[index1]).className = squares[index2] + ' delete';
-			console.log('del');
-			console.log(squares[index1]);
-			console.log(squares[index2]);
 
-
-			merges[index2] == 1;
+			merges[index2] = 1;
 			that.hasMoved = true;
 		};
 
@@ -279,51 +229,29 @@ Game.prototype = {
 		};
 
 		for(var i = 1; i <= 3; i++){
-			console.log(i);
 			if(isSquare(i)){
 				var counter = 1;
 				while(true){
 					j = i - counter;
 					if(isSquare(j) == true){
-						console.log('isSquare(j)');
 						if(isWithinGrid(j)){
 							if(isSameValue(i, j)){
-								console.log('isMerged');
-								console.log(merges);
 								if(isMerged(j)){
-									console.log('move');
-									console.log(sqVals);
 									move(i, j + 1);
-									console.log(sqVals);
 								}else{
-									console.log('merge');
-									var sqVals2 = [sqVals[0].val, sqVals[1].val, sqVals[2].val, sqVals[3].val];
-									console.log(sqVals2);
 									merge(i, j);
-									var sqVals2 = [sqVals[0].val, sqVals[1].val, sqVals[2].val, sqVals[3].val];
-									console.log(sqVals2);
 								}
 							}else{
-								console.log('move');
-								console.log(sqVals);
 								move(i, j + 1);
-								console.log(sqVals);
 							}
 							break;
 						}else{
-							console.log('move');
-							console.log(sqVals);
 							move(i, j + 1);
-							console.log(sqVals);
 							break;
 						}
 					}else{
-						console.log('else');
 						if(isWithinGrid(j) == false){
-							console.log('move');
-							console.log(sqVals);
 							move(i, j + 1);
-							console.log(sqVals);
 							break;
 						}
 					}
