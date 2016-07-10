@@ -78,13 +78,13 @@ Game.prototype = {
 			}
 		}
 
-		if(availablePositions.length == 0){
+		var sqPosition = Math.floor(Math.random() * availablePositions.length);
+		var sqCoordinate = this.positionToCoordinate(availablePositions[sqPosition]);
+		var sqValue = 2;
+		this.drawSquare(sqCoordinate, sqValue);
+
+		if(availablePositions.length == 1){
 			this.gameOver();
-		}else{
-			var sqPosition = Math.floor(Math.random() * availablePositions.length);
-			var sqCoordinate = this.positionToCoordinate(availablePositions[sqPosition]);
-			var sqValue = 2;
-			this.drawSquare(sqCoordinate, sqValue);
 		}
 	},
 
@@ -97,7 +97,32 @@ Game.prototype = {
 	},
 
 	gameOver: function(){
-		document.querySelector('.info').innerHTML = 'Game over';
+		var isGameOver = true;
+		// y0:	x0 == x1, x1 == x2, x2 == x3
+		// 		0 == 1, 1 == 2, 2 == 3 // positions
+		// y1:  4 == 5, 5 == 6, 6 == 7
+		// y3:  12 == 13, 13 == 14, 14 == 15
+		// x0: 	y0 == y1, y1 == y2, y2 == y3
+		// 		0 == 4, 4 == 8, 8 == 12
+		// x1: 	1 == 5, 5 == 9, 9 == 13
+		// x3:	3 == 7, 7 == 11, 11 == 15
+		// 3*4 + 3*4 = 24 comparisons to do
+		for(var i = 0; i <= 3; i++){
+			if(
+				this.grid[i*4].val == this.grid[i*4+1].val || 	// 0 == 1
+				this.grid[i*4+1].val == this.grid[i*4+2].val ||	// 1 == 2
+				this.grid[i*4+2].val == this.grid[i*4+3].val || // 2 == 3
+				this.grid[i].val == this.grid[i+4].val ||		// 0 == 4
+				this.grid[i+4].val == this.grid[i+8].val ||		// 4 == 8
+				this.grid[i+8].val == this.grid[i+12].val		// 8 == 12
+			){
+				isGameOver = false;
+				break;
+			}
+		}
+		if(isGameOver){
+			document.querySelector('.info').innerHTML = 'Game over';
+		}
 	},
 
 	endGame: function(){
