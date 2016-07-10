@@ -97,11 +97,11 @@ Game.prototype = {
 	},
 
 	gameOver: function(){
-		console.log('Game over');
+		document.querySelector('.info').innerHTML = 'Game over';
 	},
 
 	endGame: function(){
-		console.log('It will never stop!');
+		document.querySelector('.info').innerHTML = 'It will never stop!';
 	},
 
 	onkeydownWindow: function(keyCode){
