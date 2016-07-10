@@ -96,8 +96,12 @@ Game.prototype = {
 		}
 	},
 
-	gameOver: function () {
+	gameOver: function(){
 		console.log('Game over');
+	},
+
+	endGame: function(){
+		console.log('It will never stop!');
 	},
 
 	onkeydownWindow: function(keyCode){
@@ -198,7 +202,11 @@ Game.prototype = {
 			if(mergeAction){
 				coef = 2;
 			}
-			sqVals[index2].val = parseInt(sqVals[index1].val) * coef;
+			var newVal = parseInt(sqVals[index1].val) * coef;
+			if(newVal == 2048){
+				that.endGame();
+			}
+			sqVals[index2].val = newVal;
 			sqVals[index1].val = '';
 		};
 
