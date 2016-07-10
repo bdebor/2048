@@ -22,7 +22,6 @@
     -webkit-transition: top 0.2s, left 0.2s;
     border: 1px solid #000;
     z-index: 2;
-    background: #fff;
 }
 
 #game .delete{
@@ -80,3 +79,38 @@
 .x3-y3{
     top: 150px; left: 150px;
 }
+
+.val2{
+    background: #f2f2f2;
+}
+.val4{
+    background: #EFECD0;
+}
+.val8{
+    background: #EAE29B;
+}
+.val16{
+    background: #E6DB74;
+}
+.val32{
+    background: #EDC85C;
+}
+.val64{
+    background: #F6AD3A;
+}
+.val128{
+    background: #FD971F;
+}
+.val256{
+    background: #FB791D;
+}
+.val512{
+    background: #FA5E1B;
+}
+.val1024{
+    background: #F83F18;
+}
+.val2048{
+    background: #F72516;
+}
+

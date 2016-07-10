@@ -56,7 +56,7 @@ Game.prototype = {
 	drawSquare: function(sqCoordinate, sqValue){
 		this.isDrawn = false;
 		var sqDiv = document.createElement('div');
-		sqDiv.className = sqCoordinate;
+		sqDiv.className = sqCoordinate+' '+'val'+sqValue;
 		sqDiv.innerHTML = sqValue;
 
 		var sqPosition = this.coordinateToPosition(sqCoordinate);
@@ -206,7 +206,8 @@ Game.prototype = {
 
 		var move = function(index1, index2){
 			if(index1 != index2){
-				document.querySelector('.' + squares[index1]).className = squares[index2];
+				var val = sqVals[index1].val;
+				document.querySelector('.' + squares[index1]).className = squares[index2]+' '+'val'+val;
 
 				that.hasMoved = true;
 				updateSqVals(index1, index2);
@@ -215,7 +216,10 @@ Game.prototype = {
 
 		var merge = function(index1, index2){
 			updateSqVals(index1, index2, true);
-			document.querySelector('.' + squares[index2]).innerHTML = sqVals[index2].val;
+			var sq = document.querySelector('.' + squares[index2]);
+			var val = sqVals[index2].val;
+			sq.innerHTML = sqVals[index2].val;
+			sq.className = squares[index2]+' '+'val'+val;
 			document.querySelector('.' + squares[index1]).className = squares[index2] + ' delete';
 
 			merges[index2] = 1;
