@@ -4,16 +4,16 @@
 
 #game{
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 202px;
+    height: 202px;
     border: 1px solid #000;
     display: inline-block;
 }
 
 #game div{
     position: absolute;
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
     text-align: center;
     line-height: 50px;
     transition: top 0.2s, left 0.2s;
@@ -29,88 +29,184 @@
 }
 
 .x0-y0{
-    top: 0; left: 0;
+    top: 2px; left: 2px;
 }
 .x1-y0{
-    top: 0; left: 50px;
+    top: 2px; left: 52px;
 }
 .x2-y0{
-    top: 0; left: 100px;
+    top: 2px; left: 102px;
 }
 .x3-y0{
-    top: 0; left: 150px;
+    top: 2px; left: 152px;
 }
 
 .x0-y1{
-    top: 50px; left: 0;
+    top: 52px; left: 2px;
 }
 .x1-y1{
-    top: 50px; left: 50px;
+    top: 52px; left: 52px;
 }
 .x2-y1{
-    top: 50px; left: 100px;
+    top: 52px; left: 102px;
 }
 .x3-y1{
-    top: 50px; left: 150px;
+    top: 52px; left: 152px;
 }
 
 .x0-y2{
-    top: 100px; left: 0;
+    top: 102px; left: 2px;
 }
 .x1-y2{
-    top: 100px; left: 50px;
+    top: 102px; left: 52px;
 }
 .x2-y2{
-    top: 100px; left: 100px;
+    top: 102px; left: 102px;
 }
 .x3-y2{
-    top: 100px; left: 150px;
+    top: 102px; left: 152px;
 }
 
 .x0-y3{
-    top: 150px; left: 0;
+    top: 152px; left: 2px;
 }
 .x1-y3{
-    top: 150px; left: 50px;
+    top: 152px; left: 52px;
 }
 .x2-y3{
-    top: 150px; left: 100px;
+    top: 152px; left: 102px;
 }
 .x3-y3{
-    top: 150px; left: 150px;
+    top: 152px; left: 152px;
 }
 
 .val2{
     background: #f2f2f2;
+    animation-name: merge2;
+    animation-duration: 0.2s;
 }
 .val4{
     background: #EFECD0;
+    animation-name: merge4;
+    animation-duration: 0.2s;
 }
 .val8{
     background: #EAE29B;
+    animation-name: merge8;
+    animation-duration: 0.2s;
 }
 .val16{
     background: #E6DB74;
+    animation-name: merge16;
+    animation-duration: 0.2s;
 }
 .val32{
     background: #EDC85C;
+    animation-name: merge32;
+    animation-duration: 0.2s;
 }
 .val64{
     background: #F6AD3A;
+    animation-name: merge64;
+    animation-duration: 0.2s;
 }
 .val128{
     background: #FD971F;
+    animation-name: merge128;
+    animation-duration: 0.2s;
 }
 .val256{
     background: #FB791D;
+    animation-name: merge256;
+    animation-duration: 0.2s;
 }
 .val512{
     background: #FA5E1B;
+    animation-name: merge512;
+    animation-duration: 0.2s;
 }
 .val1024{
     background: #F83F18;
+    animation-name: merge1024;
+    animation-duration: 0.2s;
 }
 .val2048{
     background: #F72516;
+    animation-name: merge2048;
+    animation-duration: 0.2s;
 }
 
+
+@keyframes merge2{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@-webkit-keyframes merge2{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@-moz-keyframes merge2{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@-o-keyframes merge2{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+
+@keyframes merge4{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge8{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge16{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge32{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge64{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge128{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge256{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge512{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge1024{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+@keyframes merge2048{
+    25%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    50%  {width: 48px; height: 48px; margin-left: -1px; margin-top: -1px;}
+    100% {width: 46px; height: 46px; margin-left: 0; margin-top: 0;}
+}
+
+/*.val2, .val4, .val8, .val16, .val32, .val64, .val128, .val256, .val512, .val1024, .val2048{*/
